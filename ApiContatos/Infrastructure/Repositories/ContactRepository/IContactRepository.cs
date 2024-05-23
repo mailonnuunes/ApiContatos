@@ -1,4 +1,5 @@
 ﻿using ApiContatos.Domain;
+using ApiContatos.Domain.Enums;
 
 namespace ApiContatos.Infrastructure.Repositories.ContactRepository
 {
@@ -14,7 +15,7 @@ namespace ApiContatos.Infrastructure.Repositories.ContactRepository
 
         void Delete(long id);
 
-
+        Task<(IEnumerable<Contact> data, int totalCount)> GetByDDD(DDD ddd, int page, int pageSize);
 
     }
 }

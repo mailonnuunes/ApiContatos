@@ -13,6 +13,7 @@ namespace ApiContatos.Infrastructure.Data.Configurations
             builder.Property(c => c.Name).HasColumnType("VARCHAR(50)").IsRequired();
             builder.Property(c => c.Telephone).HasColumnType("INT").IsRequired();
             builder.Property(c => c.Email).HasColumnType("VARCHAR(150)").IsRequired();
+            builder.Property(c => c.Ddds).HasColumnType("Varchar(150)").IsRequired();
         }
     }
 }

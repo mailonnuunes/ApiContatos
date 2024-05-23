@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34902.65
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiContatos", "ApiContatos\ApiContatos.csproj", "{A2AE195F-2105-4336-9B7B-08897E43776E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiContatos", "ApiContatos\ApiContatos.csproj", "{A2AE195F-2105-4336-9B7B-08897E43776E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiContatosTestes", "ApiContatosTestes\ApiContatosTestes.csproj", "{3AC61E5C-5E80-44D6-9679-CE8C1C721E02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{A2AE195F-2105-4336-9B7B-08897E43776E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A2AE195F-2105-4336-9B7B-08897E43776E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A2AE195F-2105-4336-9B7B-08897E43776E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AC61E5C-5E80-44D6-9679-CE8C1C721E02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AC61E5C-5E80-44D6-9679-CE8C1C721E02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AC61E5C-5E80-44D6-9679-CE8C1C721E02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AC61E5C-5E80-44D6-9679-CE8C1C721E02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

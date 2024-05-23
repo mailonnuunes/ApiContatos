@@ -1,6 +1,7 @@
 ﻿using ApiContatos.Application.Dto;
 using ApiContatos.Application.Services.ContactService;
 using ApiContatos.Domain;
+using ApiContatos.Domain.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -35,6 +36,23 @@ namespace ApiContatos.Presentation.Controllers
 
             return Ok(response);
         }
+        [HttpGet("Obter-Contatos-por-DDD")]
+        public async Task<IActionResult> GetContactsByDDD(DDD ddds,int page = 1, int pageSize = 10)
+        {
+
+            var (contacts, totalCount) = await _contactService.GetContactsByDDD(ddds,page, pageSize);
+
+            var response = new
+            {
+                Data = contacts,
+                TotalCount = totalCount,
+                PageSize = pageSize,
+                CurrentPage = page
+            };
+
+            return Ok(response);
+        }
+
         [HttpGet("Obter-contato-por-id")]
         public IActionResult GetContactById(int id)
         {

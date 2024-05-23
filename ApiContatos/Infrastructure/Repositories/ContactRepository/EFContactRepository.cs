@@ -1,4 +1,5 @@
 ﻿using ApiContatos.Domain;
+using ApiContatos.Domain.Enums;
 using ApiContatos.Infrastructure.Data.DbContexts;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,6 +39,17 @@ namespace ApiContatos.Infrastructure.Repositories.ContactRepository
 
             return (paginatedData, totalCount);
         }
+
+        public async Task<(IEnumerable<Contact> data, int totalCount)> GetByDDD(DDD ddd,int page, int pageSize)
+        {
+        var query = _dbset.Where(c => c.Ddds == ddd);
+        var totalCount = await query.CountAsync();
+        var paginatedData = await query.Skip((page -1) *pageSize).Take(pageSize).ToListAsync();
+        return (paginatedData, totalCount);
+
+
+        }
+
 
         public Contact GetById(long id)
         {

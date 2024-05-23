@@ -74,6 +74,11 @@ namespace ApiContatos.Application.Services.ContactService
             }
         }
 
+        public Task<(IEnumerable<Contact> data, int totalcount)> GetContactsByDDD(DDD ddd, int page = 1, int pageSize = 10)
+        {
+            return _contactRepository.GetByDDD(ddd, page, pageSize);
+        }
+
         public bool UpdateContact(Contact contact)
         {
             if (string.IsNullOrEmpty(contact.Name) || !Regex.IsMatch(contact.Name, @"^[a-zA-ZÀ-ÿ ]+$") || contact.Name.Length > 50)

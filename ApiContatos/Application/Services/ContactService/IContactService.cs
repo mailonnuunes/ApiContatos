@@ -1,4 +1,5 @@
 ﻿using ApiContatos.Domain;
+using ApiContatos.Domain.Enums;
 using ApiContatos.Domain.Services;
 using System;
 
@@ -8,6 +9,7 @@ namespace ApiContatos.Application.Services.ContactService
     {
         Task<(IEnumerable<Contact> data, int totalCount)> GetAllContacts(int page = 1, int pageSize = 10);
 
+        Task<(IEnumerable<Contact> data, int totalcount)> GetContactsByDDD(DDD ddd, int page = 1, int pageSize = 10);
         ServiceResult<Contact> GetContactById(long id);
 
         bool CreateContact(Contact person);
