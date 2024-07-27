@@ -1,18 +1,38 @@
 name: ApiContatosWorkflow
 
-on: 
 
-  push: 
-    branches: ["main"]
+on:
+  push:
+    branches:
+      - master
   pull_request:
-    branches: ["main"]
-
-  workflow_dispatch:
+    branches:
+      - master
 
 jobs:
-  job01:
-    runs-on: ubunto-latest
+  build-and-test:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Run a one-line script
-        run: echo oi, bem vindo!
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.x' # Use a versão apropriada para o seu projeto
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Run unit tests
+        run: dotnet test --no-build --verbosity normal
+
+      - name: Run integration tests
+        run: dotnet test --no-build --filter "Category=Integration"
+
+      - name: Publish
+        if: success() && github.ref == 'refs/heads/main'
+        run: dotnet publish -c Release -o ./publish

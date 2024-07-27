@@ -11,7 +11,10 @@ namespace ApiContatos.Infrastructure.Data.DbContexts
         {
             _configuration = configuration;
         }
-
+        public ContactDbContext(DbContextOptions<ContactDbContext> options)
+           : base(options)
+        {
+        }
         public DbSet<Contact> contacts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -20,7 +23,11 @@ namespace ApiContatos.Infrastructure.Data.DbContexts
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:ConnectionString"));
+            if (_configuration != null)
+            {
+              
+                optionsBuilder.UseSqlite(_configuration.GetValue<string>("ConnectionStrings:ConnectionString"));
+            }
         }
     }
 }
