@@ -11,7 +11,7 @@ namespace ApiContatos.Infrastructure.Data.Configurations
             builder.ToTable("Contacts");
             builder.Property(c => c.Id).HasColumnType("INTEGER").ValueGeneratedOnAdd();
             builder.Property(c => c.Name).HasColumnType("VARCHAR(50)").IsRequired();
-            builder.Property(c => c.Telephone).HasColumnType("INT").IsRequired();
+            builder.Property(c => c.Telephone).HasColumnType("VARCHAR(13)").IsRequired();
             builder.Property(c => c.Email).HasColumnType("VARCHAR(150)").IsRequired();
             builder.Property(c => c.Ddds).HasColumnType("Varchar(150)").IsRequired();
         }

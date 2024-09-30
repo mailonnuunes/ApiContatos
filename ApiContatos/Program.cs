@@ -3,16 +3,17 @@ using ApiContatos.Infrastructure.Data.DbContexts;
 using ApiContatos.Infrastructure.Repositories.ContactRepository;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using OpenTelemetry;
+using OpenTelemetry.Extensions.Hosting;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Adiciona serviços ao contêiner.
 builder.Services.AddControllers().AddFluentValidation(config =>
 {
     config.RegisterValidatorsFromAssembly(typeof(Program).Assembly);
 });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IContactService, ContactService>();
 builder.Services.AddScoped<IContactRepository, EFContactRepository>();
@@ -21,17 +22,19 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configura o pipeline de requisições HTTP.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+app.UseRouting();
 
-app.UseAuthorization();
-
+app.UseEndpoints(endpoints =>
+{ 
+    endpoints.MapMetrics();
+});
 app.MapControllers();
 
 app.Run();

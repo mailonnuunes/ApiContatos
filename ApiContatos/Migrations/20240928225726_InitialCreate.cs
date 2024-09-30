@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace ApiContatos.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -14,12 +15,12 @@ namespace ApiContatos.Migrations
                 name: "Contacts",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "VARCHAR(50)", nullable: false),
-                    Telephone = table.Column<string>(type: "INT", nullable: false),
+                    Telephone = table.Column<string>(type: "VARCHAR(13)", nullable: false),
                     Email = table.Column<string>(type: "VARCHAR(150)", nullable: false),
-                    Ddds = table.Column<int>(type: "Varchar(150)", nullable: false)
+                    Ddds = table.Column<string>(type: "Varchar(150)", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -2,8 +2,12 @@
 using ApiContatos.Application.Services.ContactService;
 using ApiContatos.Domain;
 using ApiContatos.Domain.Enums;
+using RabbitMQ.Client;
+using Microsoft.AspNetCore.Connections;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Text.Json;
+using System.Text;
 
 namespace ApiContatos.Presentation.Controllers
 {
@@ -71,19 +75,63 @@ namespace ApiContatos.Presentation.Controllers
         [HttpPost("Criar-contato")]
         public IActionResult CreateContact(CreateContactDto createPersonDto)
         {
-
+            
             var person = new Contact(createPersonDto);
-            _contactService.CreateContact(person);
-            var newPersonId = person.Id;
-           
-            return CreatedAtAction(nameof(GetContactById), new { id = newPersonId }, person);
+            var factory = new ConnectionFactory()
+            { HostName = "localhost", UserName = "guest", Password = "guest" };
+            using var connection = factory.CreateConnection();
+            using (var channel = connection.CreateModel())
+            {
+                channel.QueueDeclare(
+                    queue: "fila-criar-contato",
+                    durable: false,
+                    exclusive: false,
+                    autoDelete: false,
+                    arguments: null);
+
+                string message = JsonSerializer
+                    .Serialize(person);
+                var body = Encoding.UTF8.GetBytes(message);
+
+                channel.BasicPublish(
+                    exchange: "",
+                    routingKey: "fila-criar-contato",
+                    basicProperties: null,
+                    body: body);
+            }
+
+            return Ok();
+
         }
 
 
         [HttpPut("Atualizar-contato")]
         public IActionResult UpdateContact(Contact person)
         {
-            _contactService.UpdateContact(person);
+            
+            var factory = new ConnectionFactory()
+            { HostName = "localhost", UserName = "guest", Password = "guest" };
+            using var connection = factory.CreateConnection();
+            using (var channel = connection.CreateModel())
+            {
+                channel.QueueDeclare(
+                    queue: "fila-atualizar-contato",
+                    durable: false,
+                    exclusive: false,
+                    autoDelete: false,
+                    arguments: null);
+
+                string message = JsonSerializer
+                    .Serialize(person);
+                var body = Encoding.UTF8.GetBytes(message);
+
+                channel.BasicPublish(
+                    exchange: "",
+                    routingKey: "fila-atualizar-contato",
+                    basicProperties: null,
+                    body: body);
+            }
+
             return NoContent();
         }
         [HttpDelete("Deletar-pessoa")]
@@ -94,7 +142,30 @@ namespace ApiContatos.Presentation.Controllers
 
             if (result.Success)
             {
-                return NoContent(); // Retorna 200 OK com a mensagem de sucesso
+                var factory = new ConnectionFactory()
+                { HostName = "localhost", UserName = "guest", Password = "guest" };
+                using var connection = factory.CreateConnection();
+                using (var channel = connection.CreateModel())
+                {
+                    channel.QueueDeclare(
+                        queue: "fila-deletar-contato",
+                        durable: false,
+                        exclusive: false,
+                        autoDelete: false,
+                        arguments: null);
+
+                    string message = JsonSerializer
+                        .Serialize(id);
+                    var body = Encoding.UTF8.GetBytes(message);
+
+                    channel.BasicPublish(
+                        exchange: "",
+                        routingKey: "fila-deletar-contato",
+                        basicProperties: null,
+                        body: body);
+                }
+
+                return NoContent();
             }
             else
             {
